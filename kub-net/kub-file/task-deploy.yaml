@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      web: task
+  template:
+    metadata:
+      labels:
+        web: task
+    spec:
+      containers:
+      - name: task
+        image: jmcglobal/kub-frontend
+        env:
+        - name: AUTH_ADDRESS
+          value: "auth-service.default"
+        - name: TASKS_FOLDER
+          value: tasks

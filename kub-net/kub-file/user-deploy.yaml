@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      web: users
+  template:
+    metadata:
+      labels:
+        web: users
+    spec:
+      containers:
+      - name: auth
+        image: jmcglobal/kub-user
+        env:
+        - name: AUTH_ADDRESS
+          # value: "10.110.24.143"
+          value: "auth-service.default"
+        

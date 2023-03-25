@@ -1,0 +1,41 @@
+# Persistent Volume configuration
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: efs-volume
+spec:
+  capacity:
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-02f3e2f832b017249  # File system ID
+
+
+---
+# Define a storage class for persistent volume
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: efs-sc
+provisioner: efs.csi.aws.com
+
+---
+# Configure Persistent Volume claim
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-volume
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: efs-sc
+  resources:
+    requests:
+      storage: 5Gi

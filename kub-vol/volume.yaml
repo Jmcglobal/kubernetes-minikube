@@ -1,0 +1,30 @@
+# Using Minikube, deploying a persistent volume using hostpath
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv
+spec:
+  capacity:
+    storage: 4Gi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+  - ReadWriteOnce
+  hostPath:
+    path: /dataaa
+    type: DirectoryOrCreate
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-claim
+spec:
+  volumeName: pv
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi
